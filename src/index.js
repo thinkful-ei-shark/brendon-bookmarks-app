@@ -1,23 +1,61 @@
 import $ from 'jquery'
+import cuid from 'cuid'
+
 //FOCUS ON: MAKING BOOKMARK HEADS
 
 
+// <i class="fas fa-star"></i> THIS IS STAR ICON
+// make star icon either appear as many as ratings value is
+// or make 5 stars and have it change color according to target
+// use a for loop and insert rating value into i < rating
 
-//build a createItem function that takes in the values of title to display bookmark name
-//and rating in bookmark head
+
 let items = []
-//make form with title, url link, description, rating
+
 //this will have to render with every new bookmark
-
-//for every bookmark head it will need to be put into a <li></li>
-
 //make bookmarkTemplate return
-function bookmarkTemplate() { }
+//bookmark will need to take in ...items
 
+function bookmarkTemplate(item) {
+    // add if statement for hidden that if hidden is set to false it will show drop down
+
+    let itemTitle = `<li data='item-id' class="bookmark-drop-downs" id='${item.id}'>${item.title}</li>
+
+        <ul class=''>
+            <li>${item.url}</li>
+            <li>${item.desc}</li>
+        </ul>
+`
+
+    if (!item.hidden) {
+        itemTitle = `<li id='${item.id}'>${item.title}</li>
+
+        <ul class='hidden'>
+            <li>${item.url}</li>
+            <li>${item.desc}</li>
+        </ul>
+        `
+    }
+
+    return itemTitle
+    // this will have to take from the object in items, since items is an array will have
+    // to make it find the index of item with indexOf()
+    // this will take in a template like this
+    //  <li>Title - Rating(How ever many stars)</li>
+    //         <ul>
+    //         <li>
+    //             Url
+    //         </li>
+    //         <li>
+    //             Description
+    //         </li>
+
+}
+// function that shows how many stars are seen by rating
 // take values of
 function dropDownForm() {
     return `
-    <form>
+    <form id = 'bookmark-form' >
 
     <label for='title'>Title</label>
     <input id="title" name='bookmark-form' type="text" required>
@@ -53,28 +91,64 @@ function dropDownForm() {
 //this takes in things like hidden = boolean, title,
 //when hidden set to true run if statement that runs the currentTarget drop down from
 //bookmark head //createItem should take in #title value
-function createItem(title) {
+function createItem(title, desc, rating) {
 
     return {
-        title,
         id: cuid(),
-        hidden: false
+        title,
+        // this will hide the drop down menu that holds description and url
+        // make function if currentTarget is clicked then set hidden to opposite boolean
+        hidden: true,
+        desc,
+        rating
     }
 
 }
 
+// make function that spreads items
 function addItem() {
-    let titleValue = $('#title').val()
-    $('form').on('submit', e => {
+
+    console.log('addItem called')
+    $('body').on('submit', '#bookmark-form', e => {
         e.preventDefault()
-        items.push(createItem(titleValue))
+        let titleValue = $('#title').val()
+        let description = $('#description').val()
+        let rating = $('#rate').val()
+        items.push(createItem(titleValue, description, rating))
+        console.log(items)
         console.log(titleValue)
+
     })
 }
+
+function getIdOfItem(current) {
+    return $(current)
+        .closest('.bookmark-drop-down')
+        .data('item-id')
+}
+
+function findById(id) {
+    return this.items.find(currentItem => currentItem.id === id)
+
+}
+
+function toggleHidden(id) {
+    let current = findById(id)
+    current.hidden = !current.hidden
+}
+
+function handleHiddenEvent() {
+
+    $('.bookmark-drop-down')
+    let id = getIdOfItem(event.target)
+    toggleHidden(id)
+}
+
 console.log(items)
 
 function displayHTML() {
     $('#result').html(dropDownForm)
+
 }
 //see list of bookmarks in condensed view when app is open
 //click on bookmark to display view
@@ -92,12 +166,24 @@ function displayHTML() {
 // }
 //can remove bookmark from list
 
+// items needs to be spread then joined
+function mapItems(items) {
+    let item = items.map(item => bookmarkTemplate(item))
+}
+
+
 //receive feedback when unable to submit bookmark
 
 //dropdown list <select> with a minimum rating filter to filter bookmarks at or above chosen rating
 function render() {
-    displayHTML
-    dropDownForm
-}
 
+    let item = [...items]
+    let mapItem = item.map(item => bookmarkTemplate(item))
+    $('.bookmark-head-list').html(mapItem)
+    addItem()
+    displayHTML()
+
+}
+// place 2 types of functions ones with handlers and functions that
+// need to display on initial load
 $(render)

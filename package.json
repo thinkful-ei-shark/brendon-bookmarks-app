@@ -21,6 +21,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "cuid": "^2.1.8",
     "jquery": "^3.5.1"
   }
 }
