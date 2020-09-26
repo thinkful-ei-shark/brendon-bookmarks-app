@@ -4,7 +4,26 @@ form {
  font-size: 30px;
 }
 
+input {
+    height: 50px;
+}
+input[type='text'], input[type='url']{
+    font-size: 30px;
+}
 
+textarea {
+    height: 80px;
+}
+
+select {
+    height: 40px;
+    font-size: large;
+}
+
+button {
+    height: 40px;
+    width: 80px;
+}
 
 .hidden {
     display: none;

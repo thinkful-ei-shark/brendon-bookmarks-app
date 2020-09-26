@@ -19,23 +19,13 @@ let items = []
 function bookmarkTemplate(item) {
     // add if statement for hidden that if hidden is set to false it will show drop down
 
-    let itemTitle = `<li data-item-id="${item.id}" class="bookmark-drop-downs">${item.title}, Rating: ${item.rating}</li>
+    let itemTitle = `<li data-item-id="${item.id}" class="bookmark-head">${item.title}, Rating: ${item.rating}</li>
 
-        <ul class='hidden'>
+        <ul id='bookmark-dropdown' class='hidden'>
             <li>${item.url}</li>
             <li>${item.desc}</li>
         </ul>
 `
-
-    if (!item.hidden) {
-        itemTitle = `<li id='${item.id}'>${item.title}, Rating: ${item.rating}</li>
-
-        <ul>
-            <li>${item.url}</li>
-            <li>${item.desc}</li>
-        </ul>
-        `
-    }
 
     return itemTitle
     // this will have to take from the object in items, since items is an array will have
@@ -72,12 +62,15 @@ function dropDownForm() {
         <option value="5">5 Star</option>
     </select>
     <button type='submit'>Submit</button>
-    <button type="reset">Cancel</button>
+    <button class='cancel' type="reset">Cancel</button>
 
 </form>`
 
 }
 
+function addButtonTemplate() {
+    return `<button name='add' id='add' class='add'>Add</button>`
+}
 /////////////////////////////////////
 // use this set up for form        //
 // const create = function(name) { //
@@ -120,16 +113,17 @@ function handleAddItem() {
         items.push(createItem(titleValue, description, rating))
 
         let item = [...items]
+
         $('.bookmark-head-list').html(mapItems(item))
 
         console.log(titleValue)
-        render()
+
     })
 }
 
 function getIdOfItem(current) {
     return $(current)
-        .closest('.bookmark-drop-downs')
+        .closest('.bookmark-head')
         .data('item-id')
 }
 
@@ -140,30 +134,51 @@ function findById(id) {
 
 }
 
-// when bookmark head is click this needs to run
-function toggleFindAndHidden(id) {
+// // when bookmark head is click this needs to run
+// function toggleFindAndHidden(id) {
 
-    let current = findById(id)
-    console.log(current)
-    current.hidden = !current.hidden
+//     let current = findById(id)
+//     console.log(current)
+//     current.hidden = !current.hidden
 
-}
+// }
 
-function handleToggleHidden(){
+function handleToggleHidden() {
+
     console.log('ran handleToggleHidden')
-    $('.bookmark-head-list').on('click', 'li', function(e){
+
+    $('.bookmark-head-list').on('click', 'li', function (e) {
+
+
         let getId = getIdOfItem(e.target)
         console.log(getId)
-        toggleFindAndHidden(getId)
+        let id = findById(getId)
+        $('.bookmark-head-list').children('#bookmark-dropdown').toggleClass('hidden')
+
         console.log(items)
-        render()
     })
 
 }
 console.log(items)
 
-function displayHTML() {
-    $('#add-form').html(dropDownForm())
+function mainPageHTML() {
+    return $('body').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='add-form'> </ul>`)
+}
+
+// when add button is clicked run ${dropDownForm()} make the cancel button go back
+function addButtonClick() {
+    $('body').on('click', '.add', function (e) {
+        e.preventDefault()
+
+        return $('body').html(`<h1>Bookmark App</h1> ${dropDownForm()} <ul class='add-form'> </ul>`)
+    })
+}
+
+function cancelButtonClick() {
+    $('body').on('click', '.cancel', function () {
+        console.log('cancel button clicked')
+        return mainPageHTML()
+    })
 }
 //see list of bookmarks in condensed view when app is open
 //click on bookmark to display view
@@ -194,9 +209,13 @@ function mapItems(i) {
 
 //dropdown list <select> with a minimum rating filter to filter bookmarks at or above chosen rating
 function render() {
+
+    mainPageHTML()
+    cancelButtonClick()
+    addButtonClick()
     handleToggleHidden()
     handleAddItem()
-    displayHTML()
+
 
 }
 
