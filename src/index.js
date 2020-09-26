@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import cuid from 'cuid'
-
+import item from './items'
 //FOCUS ON: CLICKING BOOKMARK HEAD TO OPEN DROP DOWN LIST
 
 
@@ -10,14 +10,9 @@ import cuid from 'cuid'
 // use a for loop and insert rating value into i < rating
 
 
-let items = []
 
-//this will have to render with every new bookmark
-//make bookmarkTemplate return
-//bookmark will need to take in map ...items
 
 function bookmarkTemplate(item) {
-    // add if statement for hidden that if hidden is set to false it will show drop down
 
     let itemTitle = `<li data-item-id="${item.id}" class="bookmark-head">${item.title}, Rating: ${item.rating}</li>
 
@@ -28,31 +23,20 @@ function bookmarkTemplate(item) {
 `
 
     return itemTitle
-    // this will have to take from the object in items, since items is an array will have
-    // to make it find the index of item with indexOf()
-    // this will take in a template like this
-    //  <li>Title - Rating(How ever many stars)</li>
-    //         <ul>
-    //         <li>
-    //             Url
-    //         </li>
-    //         <li>
-    //             Description
-    //         </li>
 
 }
 // function that shows how many stars are seen by rating
-// take values of
+
 function dropDownForm() {
     return `
     <form id = 'bookmark-form' >
 
     <label for='title'>Title</label>
-    <input id="title" name='bookmark-form' type="text" required>
+    <input id="title" name='bookmark-form' type="text" placeholder='Required' required>
     <label for='url'>Url</label>
-    <input id="url" name='bookmark-form' type="url" required>
+    <input id="url" name='bookmark-form' type="url" placeholder='Required' required>
     <label for="description">Description</label>
-    <textarea id="description" name='bookmark-form'></textarea>
+    <textarea id="description" name='bookmark-form' placeholder='Recommended'></textarea>
     <label for='rate'>Rate</label>
     <select id='rate' name='bookmark-form' type="text">
         <option value="1">1 Star</option>
@@ -71,48 +55,34 @@ function dropDownForm() {
 function addButtonTemplate() {
     return `<button name='add' id='add' class='add'>Add</button>`
 }
-/////////////////////////////////////
-// use this set up for form        //
-// const create = function(name) { //
-//     return {                    //
-//       id: cuid(),               //
-//       name,                     //
-//       checked: false            //
-//     };                          //
-//   };                            //
-/////////////////////////////////////
-//this takes in things like hidden = boolean, title,
-//when hidden set to true run if statement that runs the currentTarget drop down from
-//bookmark head //createItem should take in #title value
+
 function createItem(title, desc, rating) {
 
     return {
+
         id: cuid(),
         title,
-        // this will hide the drop down menu that holds description and url
-        // make function if currentTarget is clicked then set hidden to opposite boolean
-        hidden: true,
         desc,
         rating
+
     }
 
 }
 
-// make function that spreads items
+
 function handleAddItem() {
 
     console.log('addItem called')
 
-    $('body').on('submit', '#bookmark-form', e => {
+    $('#bookmark-form').on('submit', (e) => {
 
         e.preventDefault()
 
         let titleValue = $('#title').val()
         let description = $('#description').val()
         let rating = $('#rate').val()
-        items.push(createItem(titleValue, description, rating))
-
-        let item = [...items]
+        item.items.push(createItem(titleValue, description, rating))
+        let item = [...item.items]
 
         $('.bookmark-head-list').html(mapItems(item))
 
@@ -127,50 +97,39 @@ function getIdOfItem(current) {
         .data('item-id')
 }
 
-// use this on both deleteItem and toggleHidden
+// use this on delete
 function findById(id) {
 
-    return items.find(currentItem => currentItem.id === id)
+    return item.items.find(currentItem => currentItem.id === id)
 
 }
-
-// // when bookmark head is click this needs to run
-// function toggleFindAndHidden(id) {
-
-//     let current = findById(id)
-//     console.log(current)
-//     current.hidden = !current.hidden
-
-// }
 
 function handleToggleHidden() {
 
     console.log('ran handleToggleHidden')
 
-    $('.bookmark-head-list').on('click', 'li', function (e) {
-
+    $('.bookmark-head-list').on('click', '.bookmark-head', function (e) {
 
         let getId = getIdOfItem(e.target)
         console.log(getId)
         let id = findById(getId)
-        $('.bookmark-head-list').children('#bookmark-dropdown').toggleClass('hidden')
+        $('.bookmark-head').children('#bookmark-dropdown').toggleClass('hidden')
 
-        console.log(items)
+        console.log(item.items)
     })
 
 }
-console.log(items)
+console.log(item.items)
 
 function mainPageHTML() {
-    return $('body').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='add-form'> </ul>`)
+    return $('body').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>`)
 }
 
-// when add button is clicked run ${dropDownForm()} make the cancel button go back
 function addButtonClick() {
     $('body').on('click', '.add', function (e) {
         e.preventDefault()
+        return $('body').html(`<h1>Bookmark App</h1> ${dropDownForm()} <ul class='bookmark-head-list'> </ul>`)
 
-        return $('body').html(`<h1>Bookmark App</h1> ${dropDownForm()} <ul class='add-form'> </ul>`)
     })
 }
 
@@ -182,21 +141,8 @@ function cancelButtonClick() {
 }
 //see list of bookmarks in condensed view when app is open
 //click on bookmark to display view
-//make form collapse into bookmark name when submitted
-//set form to be hidden by default
-//use if statement to check a boolean value
-//if boolean value is set to
-//bookmarkHead is going to need the Title and Rating
-//the dropdown menu will need the Description and Url
+//make form collapse into bookmark head when submitted
 
-// function bookmarkHead() {
-
-//     return ``
-
-// }
-//can remove bookmark from list
-
-// items needs to be spread then joined
 function mapItems(i) {
     let item = i.map(item => bookmarkTemplate(item))
     return item.join('')
@@ -208,13 +154,15 @@ function mapItems(i) {
 //receive feedback when unable to submit bookmark
 
 //dropdown list <select> with a minimum rating filter to filter bookmarks at or above chosen rating
-function render() {
 
+
+function render() {
+    handleAddItem()
     mainPageHTML()
     cancelButtonClick()
     addButtonClick()
     handleToggleHidden()
-    handleAddItem()
+
 
 
 }
