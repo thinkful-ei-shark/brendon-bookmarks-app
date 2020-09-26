@@ -1,5 +1,3 @@
-<a href='https://thinkful-ei-shark.github.io/brendon-bookmarks-app/'> LIVE </a>
-
 Bookmarks contain:
 
   title
