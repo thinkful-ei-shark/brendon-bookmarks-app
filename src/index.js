@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import cuid from 'cuid'
-import item from './items'
+import items from './items'
 //FOCUS ON: CLICKING BOOKMARK HEAD TO OPEN DROP DOWN LIST
 
 
@@ -29,23 +29,23 @@ function bookmarkTemplate(item) {
 
 function dropDownForm() {
     return `
-    <form id = 'bookmark-form' >
+    <form id='bookmark-form' >
 
     <label for='title'>Title</label>
-    <input id="title" name='bookmark-form' type="text" placeholder='Required' required>
+    <input id="title" type="text" placeholder='Required' required>
     <label for='url'>Url</label>
-    <input id="url" name='bookmark-form' type="url" placeholder='Required' required>
+    <input id="url" type="url" placeholder='Required' required>
     <label for="description">Description</label>
-    <textarea id="description" name='bookmark-form' placeholder='Recommended'></textarea>
+    <textarea id="description" placeholder='Recommended'></textarea>
     <label for='rate'>Rate</label>
-    <select id='rate' name='bookmark-form' type="text">
+    <select id='rate' type="text">
         <option value="1">1 Star</option>
         <option value="2">2 Star</option>
         <option value="3">3 Star</option>
         <option value="4">4 Star</option>
         <option value="5">5 Star</option>
     </select>
-    <button type='submit'>Submit</button>
+    <button class='bookmark-submit-button' type='submit'>Submit</button>
     <button class='cancel' type="reset">Cancel</button>
 
 </form>`
@@ -74,22 +74,33 @@ function handleAddItem() {
 
     console.log('addItem called')
 
-    $('#bookmark-form').on('submit', (e) => {
+    $('body').on('submit', $('#bookmark-form'), (e) => {
 
         e.preventDefault()
 
         let titleValue = $('#title').val()
         let description = $('#description').val()
         let rating = $('#rate').val()
-        item.items.push(createItem(titleValue, description, rating))
-        let item = [...item.items]
+        items.items.push(createItem(titleValue, description, rating))
 
-        $('.bookmark-head-list').html(mapItems(item))
+        render()
 
-        console.log(titleValue)
 
     })
 }
+
+
+function displayItems() {
+
+    $('.bookmark-submit-button').on('click'), () => {
+        itemList = [...items.items]
+        console.log(itemList)
+        $('.bookmark-head-list').html(mapItems(itemList))
+        render()
+
+    }
+}
+
 
 function getIdOfItem(current) {
     return $(current)
@@ -119,7 +130,7 @@ function handleToggleHidden() {
     })
 
 }
-console.log(item.items)
+console.log(items.items)
 
 function mainPageHTML() {
     return $('body').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>`)
@@ -157,17 +168,19 @@ function mapItems(i) {
 
 
 function render() {
+
+    displayItems()
     handleAddItem()
     mainPageHTML()
     cancelButtonClick()
     addButtonClick()
     handleToggleHidden()
 
-
-
 }
 
-
+function main() {
+    render()
+}
 // place 2 types of functions ones with handlers and functions that
 // need to display on initial load
-$(render)
+$(main)
