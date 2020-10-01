@@ -1,6 +1,7 @@
-The User Can
+The User Can:
 
 ===
+
     I can add bookmarks to my bookmark list.
 
     Bookmarks Contain:
