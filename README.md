@@ -1,15 +1,14 @@
-The User Can:
+The User's Story:
 
-===
+    I can add bookmarks to bookmark list.
 
-    I can add bookmarks to my bookmark list.
+        Bookmarks Contain:
+            Title
+            Url Link
+            Description
+            Rating (1-5)
 
-    Bookmarks Contain:
-        Title
-        Url Link
-        Description
-        Rating (1-5)
-        I can see a list of my bookmarks when I first open the app
+    I can see a list of my bookmarks when I first open the app
 
     All bookmarks in the list default to a "condensed" view showing only title and rating
 
@@ -28,4 +27,3 @@ The User Can:
     bookmarks rated at or above the chosen selection
 
     <strike> (Extension feature - optional) I can edit the rating and description of a bookmark in my list </strike>
-===
