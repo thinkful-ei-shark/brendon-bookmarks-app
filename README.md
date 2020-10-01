@@ -1,6 +1,6 @@
 The User Can
 
-==========================================================================================
+===
     I can add bookmarks to my bookmark list.
 
     Bookmarks Contain:
@@ -27,4 +27,4 @@ The User Can
     bookmarks rated at or above the chosen selection
 
     <strike> (Extension feature - optional) I can edit the rating and description of a bookmark in my list </strike>
-==========================================================================================
+===
