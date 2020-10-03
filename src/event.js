@@ -2,7 +2,7 @@ import $ from 'jquery'
 import app from './app'
 import item from './item'
 import store from './store'
-
+import api from './api'
 
 function handleAddItem() {
 
@@ -21,7 +21,10 @@ function handleAddItem() {
             item.validateUrl(url)
             item.items.push(item.createItem(titleValue, description, rating, url))
             let itemList = [...item.items]
+            api.getBookmarks.then
+
             console.log(itemList)
+
             // Change this to grab from API
             $('.bookmark-head-list').html(store.mapstore(itemList))
             console.log('Submit Triggered')
