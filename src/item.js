@@ -7,14 +7,13 @@ const validateName = function (name) {
 };
 
 const validateUrl = function (url) {
-    if (!url || url[0, 4] === 'http') throw new TypeError('URL must not be blank');
+    if (!url) throw new TypeError('URL must not be blank');
 };
 
 function createItem(title, desc, rating, url) {
 
     return {
 
-        id: cuid(),
         title,
         url,
         desc,
