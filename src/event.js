@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import $, { map } from 'jquery'
 import app from './app'
 import item from './item'
 import store from './store'
@@ -42,11 +42,14 @@ function handleAddItem() {
 
             // I want a single object to be pushed to the API
             // DONT USE ITEMLIST BECAUSE IT CONTAINS ALL THE ITEMS
-            api.addNewItem(bookmark).then(res => { res.json() })
-                .then(response => {
-                    console.log(response)
-                    $('.bookmark-head-list').html(store.mapstore(response))
-                })
+            api.addNewItem(bookmark)
+            api.getBookmarks()
+                .then(bookmarksRes => bookmarksRes.json())
+                .then(bookmarksResJson => {
+                    console.log(bookmarksResJson)
+                    $('.bookmark-head-list').html(store.mapstore(bookmarksResJson))
+                }
+                )
 
             // .then(
             //     api.getBookmarks().then(res => res.json()).then()
