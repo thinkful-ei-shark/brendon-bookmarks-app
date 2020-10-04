@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import item from './item'
 
+// HAVE TO ADD DELETE BUTTON TO EVERY NEW BOOKMARK (An Edit/Patch is optional)
 
 
 function dropDownForm() {
@@ -31,6 +32,7 @@ function dropDownForm() {
 function bookmarkTemplate(item) {
 
     let itemTitle = `<li data-item-id="${item.id}" class="bookmark-head">${item.title}, Rating: ${item.rating}</li>
+    <button class='delete'>Delete</button>
 
         <ul id='bookmark-dropdown' class='hidden'>
             <li>${item.url}</li>
@@ -42,12 +44,13 @@ function bookmarkTemplate(item) {
             item.desc = 'No Input'
         }
         itemTitle = `<li data-item-id="${item.id}" class="bookmark-head">${item.title}, Rating: ${item.rating}</li>
+        <button class='delete'>Delete</button>
 
-    <ul id='bookmark-dropdown'>
-        <li>Url: ${item.url}</li>
-        <li>Desc: ${item.desc}</li>
-    </ul>
-`
+            <ul id='bookmark-dropdown' class='hidden'>
+                <li>${item.url}</li>
+                <li>${item.desc}</li>
+            </ul>
+    `
 
     }
 
@@ -62,7 +65,7 @@ function addButtonTemplate() {
 function mainPageHTML() {
 
     // Get bookmarks and place them into bookmark-head-list
-    return $('body').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>`)
+    return $('main').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>`)
 
 }
 

@@ -5,11 +5,14 @@ import store from './store'
 import api from './api'
 import event from './event'
 
+
+console.log(api.getBookmarks())
+
 function handleAddItem() {
 
     console.log('addItem called')
 
-    $('body').on('submit', '#bookmark-form', (e) => {
+    $('main').on('submit', '#bookmark-form', (e) => {
 
         e.preventDefault()
         try {
@@ -26,25 +29,31 @@ function handleAddItem() {
             let url = $('#url').val()
             item.validateName(titleValue)
             item.validateUrl(url)
-            //instead of pushing to anywhere we could make this a variable
 
+            //instead of pushing we could make this a variable
             let bookmark = item.createItem(titleValue, description, rating, url)
+
             // This has a chance of not being needed
-            // Might be best to fetch from the api instead
+            // CANNOT GRAB FROM FETCH, SOLUTION: UPLOAD TO item.items ALSO
             // from the item.js
-            // let itemList = [...item.items]
-            console.log(bookmark)
+            item.items.push(bookmark)
+            let itemList = [...item.items]
+            console.log(itemList)
+
             // I want a single object to be pushed to the API
             // DONT USE ITEMLIST BECAUSE IT CONTAINS ALL THE ITEMS
-            api.addNewItem(bookmark)
+            api.addNewItem(bookmark).then(res => { res.json() })
+                .then(response => {
+                    console.log(response)
+                    $('.bookmark-head-list').html(store.mapstore(response))
+                })
 
             // .then(
             //     api.getBookmarks().then(res => res.json()).then()
             // ).then(console.log(bookmark))
 
+            //Change this to grab from API
 
-            // Change this to grab from API
-            // $('.bookmark-head-list').html(store.mapstore(itemList))
             console.log('Submit Triggered')
 
         }
@@ -61,7 +70,7 @@ function handleToggleHidden() {
 
     console.log('ran handleToggleHidden')
 
-    $('body').on('click', '.bookmark-head', function (e) {
+    $('main').on('click', '.bookmark-head', function (e) {
         console.log('Ran handleToggleButton')
         let getId = app.getIdOfItem(e.target)
         console.log(getId)
@@ -69,24 +78,27 @@ function handleToggleHidden() {
         id.checked = !id.checked
         console.log(id)
         console.log(item.items)
-        // let itemList = [...item.items]
-        // console.log(itemList)
-        // $('.bookmark-head-list').html(store.mapstore(itemList))
+        let itemList = [...item.items]
+        console.log(itemList)
+        $('.bookmark-head-list').html(store.mapstore(itemList))
 
     })
 }
 
 function handleCancelButtonClick() {
-    $('body').on('click', '.cancel', function () {
+
+    $('main').on('click', '.cancel', function () {
         console.log('cancel button clicked')
         return app.mainPageHTML()
     })
+
 }
 
 function handleAddButtonClick() {
-    $('body').on('click', '.add', function (e) {
+
+    $('main').on('click', '.add', function (e) {
         e.preventDefault()
-        return $('body').html(`<h1>Bookmark App</h1> ${app.dropDownForm()} <ul class='bookmark-head-list'> </ul>`)
+        return $('main').html(`<h1>Bookmark App</h1> ${app.dropDownForm()} <ul class='bookmark-head-list'> </ul>`)
 
     })
 }
