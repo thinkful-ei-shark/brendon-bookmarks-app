@@ -4,11 +4,25 @@ form {
  font-size: 30px;
 }
 
+a {
+    color: blue;
+}
+
 input {
     height: 50px;
 }
 input[type='text'], input[type='url']{
     font-size: 30px;
+}
+
+.bookmark-head-list {
+    width: 300px;
+    border: 1px solid black;
+}
+
+.bookmark {
+    padding-left: 10px;
+    border: 1px solid grey
 }
 
 textarea {

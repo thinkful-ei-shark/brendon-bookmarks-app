@@ -4,7 +4,7 @@ import api from './api'
 import store from './store'
 // HAVE TO ADD DELETE BUTTON TO EVERY NEW BOOKMARK (An Edit/Patch is optional)
 
-
+// call rating value <div >
 function dropDownForm() {
     return `
     <form id='bookmark-form' >
@@ -31,30 +31,31 @@ function dropDownForm() {
 }
 
 function bookmarkTemplate(item) {
+    let fafastar = `<div class='fa fa-star'></div>`.repeat(item.rating);
 
     let itemTitle = `<div class='bookmark'><div data-item-id="${item.id}" class="bookmark-head">${item.title},
-    Rating: ${item.rating}</div>
+    Rating: ${fafastar}</div>
     <button class='delete'>Delete</button>
 
         <ul id='bookmark-dropdown' class='hidden'>
-            <li>${item.url}</li>
+            <a href=${item.url}><li>${item.url}</li></a>
             <li>${item.desc}</li>
         </ul>
 </div>`
     if (item.checked) {
         if (!$('#description').val()) {
-            item.desc = 'No Input'
+            item.desc = 'N/A'
         }
-        itemTitle = `<div class='bookmark>'<div data-item-id="${item.id}" class="bookmark-head">${item.title},
-        Rating: ${item.rating}</div>
+        itemTitle = `<div class='bookmark'><div data-item-id="${item.id}" class="bookmark-head">${item.title},
+        Rating: ${fafastar}</div>
         <button class='delete'>Delete</button>
 
             <ul id='bookmark-dropdown'>
-                <li>${item.url}</li>
+                <a href=${item.url}><li>${item.url}</li></a>
                 <li>${item.desc}</li>
             </ul>
-            </div>
-    `
+    </div>`
+
     }
 
     return itemTitle
@@ -62,14 +63,14 @@ function bookmarkTemplate(item) {
 }
 
 function addButtonTemplate() {
-    return `<button name='add' id='add' class='add'>Add</button>`
+    return `<button name='add' id='add' class='add'>Add</button> `
 }
 
 function mainPageHTML() {
 
     // Get bookmarks and place them into bookmark-head-list
-    return $('main').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>
-    `)
+    return $('main').html(`<h1>Bookmark App</h1 > ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>
+        `)
 
 }
 
@@ -83,6 +84,7 @@ function getIdOfItem(current) {
 
 
 function findById(id) {
+
     console.log(item, 'item')
     return item.items.find(currentItem => currentItem.id === id)
 

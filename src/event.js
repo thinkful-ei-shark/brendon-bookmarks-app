@@ -25,13 +25,16 @@ function handleAddItem() {
 
             let bookmark = item.createItem(titleValue, description, rating, url)
 
-            item.items.push(bookmark)
-            let itemList = [...item.items]
-
-            console.log(itemList)
-            app.mainPageHTML()
             api.addNewItem(bookmark)
+            //item.items.push(bookmark)
+            //let itemList = [...item.items]
+
+            //console.log(itemList)
+
+            app.mainPageHTML()
             app.displayBookmarkApiList()
+            app.displayBookmarkApiList()
+
 
             console.log('Submit Triggered')
 
@@ -54,11 +57,12 @@ function handleToggleHidden() {
         let getId = app.getIdOfItem(e.target)
         console.log(getId)
         let id = app.findById(getId)
+        console.log(item.items, 'Before id.check')
         id.checked = !id.checked
-        console.log(id)
-        console.log(item.items)
+        //console.log(id, 'id')
+        console.log(item.items, 'item.items')
         let itemList = [...item.items]
-        console.log(itemList)
+        console.log(itemList, 'itemList')
         $('.bookmark-head-list').html(store.mapstore(itemList))
 
 

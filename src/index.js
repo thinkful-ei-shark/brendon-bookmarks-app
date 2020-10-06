@@ -15,6 +15,7 @@ function main() {
         // .then(bookmarksRes => bookmarksRes.json())
         .then(bookmarksResJson => {
             item.items = bookmarksResJson
+            console.log(item.items, 'item,items')
             $('.bookmark-head-list').html(store.mapstore(bookmarksResJson))
         }
         )
