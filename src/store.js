@@ -9,6 +9,7 @@ function findById(id) {
 
 
 function mapstore(i) {
+    
     let item = i.map(item => app.bookmarkTemplate(item))
     return item.join('')
 

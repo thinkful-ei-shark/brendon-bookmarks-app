@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import item from './item'
-
+import api from './api'
+import store from './store'
 // HAVE TO ADD DELETE BUTTON TO EVERY NEW BOOKMARK (An Edit/Patch is optional)
 
 
@@ -31,27 +32,29 @@ function dropDownForm() {
 
 function bookmarkTemplate(item) {
 
-    let itemTitle = `<li data-item-id="${item.id}" class="bookmark-head">${item.title}, Rating: ${item.rating}</li>
+    let itemTitle = `<div class='bookmark'><div data-item-id="${item.id}" class="bookmark-head">${item.title},
+    Rating: ${item.rating}</div>
     <button class='delete'>Delete</button>
 
         <ul id='bookmark-dropdown' class='hidden'>
             <li>${item.url}</li>
             <li>${item.desc}</li>
         </ul>
-`
+</div>`
     if (item.checked) {
         if (!$('#description').val()) {
             item.desc = 'No Input'
         }
-        itemTitle = `<li data-item-id="${item.id}" class="bookmark-head">${item.title}, Rating: ${item.rating}</li>
+        itemTitle = `<div class='bookmark>'<div data-item-id="${item.id}" class="bookmark-head">${item.title},
+        Rating: ${item.rating}</div>
         <button class='delete'>Delete</button>
 
-            <ul id='bookmark-dropdown' class='hidden'>
+            <ul id='bookmark-dropdown'>
                 <li>${item.url}</li>
                 <li>${item.desc}</li>
             </ul>
+            </div>
     `
-
     }
 
     return itemTitle
@@ -65,7 +68,8 @@ function addButtonTemplate() {
 function mainPageHTML() {
 
     // Get bookmarks and place them into bookmark-head-list
-    return $('main').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>`)
+    return $('main').html(`<h1>Bookmark App</h1> ${addButtonTemplate()} <ul class='bookmark-head-list'></ul>
+    `)
 
 }
 
@@ -79,14 +83,24 @@ function getIdOfItem(current) {
 
 
 function findById(id) {
-
+    console.log(item, 'item')
     return item.items.find(currentItem => currentItem.id === id)
 
+}
+
+function displayBookmarkApiList() {
+    api.getBookmarks()
+        .then(bookmarksResJson => {
+            item.items = bookmarksResJson
+            $('.bookmark-head-list').html(store.mapstore(item.items))
+        }
+        )
 }
 
 
 export default {
 
+    displayBookmarkApiList,
     mainPageHTML,
     findById,
     getIdOfItem,
