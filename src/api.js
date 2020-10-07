@@ -11,7 +11,7 @@ function getBookmarks() {
 
 // item will be the item being added
 function addNewItem(item) {
-
+    console.log(item, "Api Item")
     //this will go into body so it has to be an object
     let newItem = JSON.stringify(item);
     console.log(endpoint)
@@ -26,7 +26,7 @@ function addNewItem(item) {
 
 function deleteItem(id) {
     return fetch(endpoint + id, {
-        method: 'DELETE',
+        method: 'DELETE'
     })
 }
 

@@ -1,7 +1,16 @@
+main {
+    display: flex;
+}
+
+.main {
+    text-align: center;
+}
+
 form {
- display: flex;
- flex-direction: column;
- font-size: 30px;
+
+    display: inline-flex;
+    flex-direction: column;
+    font-size: 30px;
 }
 
 a {
@@ -16,6 +25,7 @@ input[type='text'], input[type='url']{
 }
 
 .bookmark-head-list {
+
     width: 300px;
     border: 1px solid black;
 }
@@ -23,6 +33,17 @@ input[type='text'], input[type='url']{
 .bookmark {
     padding-left: 10px;
     border: 1px solid grey
+}
+
+.bookmark {
+    text-align: center;
+    justify-content: center;
+}
+
+.bookmark-head {
+    padding: 20px 10px 20px 10px;
+    border: 1px solid grey;
+
 }
 
 textarea {

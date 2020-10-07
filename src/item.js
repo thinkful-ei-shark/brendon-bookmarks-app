@@ -1,5 +1,3 @@
-import cuid from 'cuid'
-
 let items = []
 
 const validateName = function (name) {

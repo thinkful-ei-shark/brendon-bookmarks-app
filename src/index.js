@@ -1,15 +1,14 @@
 import $ from 'jquery'
 import event from './event'
-import app from './app'
+import store from './store'
 import api from './api'
 import item from './item'
-import store from './store'
 
 function main() {
 
 
     event.bindEventListeners()
-    app.mainPageHTML()
+    store.mainPageHTML()
 
     api.getBookmarks()
         // .then(bookmarksRes => bookmarksRes.json())

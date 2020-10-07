@@ -1,5 +1,4 @@
 import $ from 'jquery'
-import app from './app'
 import item from './item'
 import store from './store'
 import api from './api'
@@ -25,15 +24,17 @@ function handleAddItem() {
 
             let bookmark = item.createItem(titleValue, description, rating, url)
 
+            console.log(bookmark)
+
             api.addNewItem(bookmark)
+
             //item.items.push(bookmark)
             //let itemList = [...item.items]
-
             //console.log(itemList)
 
-            app.mainPageHTML()
-            app.displayBookmarkApiList()
-            app.displayBookmarkApiList()
+            store.mainPageHTML()
+            store.displayBookmarkApiList()
+
 
 
             console.log('Submit Triggered')
@@ -53,10 +54,11 @@ function handleToggleHidden() {
     console.log('ran handleToggleHidden')
 
     $('main').on('click', '.bookmark-head', function (e) {
-        console.log('Ran handleToggleButton')
-        let getId = app.getIdOfItem(e.target)
+        +
+            console.log('Ran handleToggleButton')
+        let getId = store.getIdOfItem(e.target)
         console.log(getId)
-        let id = app.findById(getId)
+        let id = store.findById(getId)
         console.log(item.items, 'Before id.check')
         id.checked = !id.checked
         //console.log(id, 'id')
@@ -75,13 +77,14 @@ function handleDelete() {
 
         console.log('Clicked Delete')
 
-        let getId = app.getIdOfItem(e.target)
+        let getId = store.getIdOfItem(e.target)
         console.log(getId, "Get Id")
-        let id = app.findById(getId)
+        let id = store.findById(getId)
         console.log(id, 'id')
 
         api.deleteItem(id)
-        app.mainPageHTML()
+        store.mainPageHTML()
+        store.displayBookmarkApiList()
     })
 
 }
@@ -90,8 +93,8 @@ function handleCancelButtonClick() {
 
     $('main').on('click', '.cancel', function () {
         console.log('cancel button clicked')
-        app.mainPageHTML()
-        app.displayBookmarkApiList()
+        store.mainPageHTML()
+        store.displayBookmarkApiList()
 
     })
 
@@ -101,7 +104,7 @@ function handleAddButtonClick() {
 
     $('main').on('click', '.add', function (e) {
         e.preventDefault()
-        return $('main').html(`<h1>Bookmark App</h1> ${app.dropDownForm()} <ul class='bookmark-head-list'> </ul>`)
+        return $('main').html(`<div class='main'><h1>Bookmark App</h1> ${store.dropDownForm()} <ul class='bookmark-head-list'></ul><div>`)
 
     })
 }
