@@ -33,27 +33,28 @@ function dropDownForm() {
 function bookmarkTemplate(item) {
     let fafastar = `<div class='fa fa-star'></div>`.repeat(item.rating);
 
-    let itemTitle = `<div class='bookmark'><div data-item-id="${item.id}" class="bookmark-head">${item.title},
-    Rating: ${fafastar}</div>
-    <button class='delete'>Delete</button>
-
+    let itemTitle = `<div data-item-id="${item.id}" class="bookmark-head">${item.title},
+        Rating: ${fafastar} <br>
+        <button class='delete'>Delete</button>
         <ul id='bookmark-dropdown' class='hidden'>
             <a href=${item.url}><li>${item.url}</li></a>
             <li>${item.desc}</li>
         </ul>
-</div>`
+    </div>`
     if (item.checked) {
         if (!$('#description').val()) {
             item.desc = 'N/A'
         }
-        itemTitle = `<div class='bookmark'><div data-item-id="${item.id}" class="bookmark-head">${item.title},
-        Rating: ${fafastar}</div>
-        <button class='delete'>Delete</button>
-
+        itemTitle = `<div data-item-id="${item.id}" class="bookmark-head">${item.title},
+        Rating: ${fafastar} <br>
+            <button class='delete'>Delete</button>
             <ul id='bookmark-dropdown'>
-                <a href=${item.url}><li>${item.url}</li></a>
-                <li>${item.desc}</li>
-            </ul>
+            <a href=${item.url}><li>${item.url}</li></a>
+            <li>${item.desc}</li>
+        </ul>
+    </div>
+
+
     </div>`
 
     }
@@ -69,7 +70,7 @@ function addButtonTemplate() {
 function mainPageHTML() {
 
     // Get bookmarks and place them into bookmark-head-list
-    return $('main').html(`<div class='main'><h1>Bookmark App</h1 > ${addButtonTemplate()} <ul class='bookmark-head-list'></div></ul>
+    return $('main').html(`<div class='main'> <h1>Bookmark App</h1 > ${addButtonTemplate()} <ul class='bookmark-head-list'></div></ul >
         `)
 
 }
@@ -77,9 +78,19 @@ function mainPageHTML() {
 
 
 function getIdOfItem(current) {
+    console.log(current, 'current')
     return $(current)
         .closest('.bookmark-head')
         .data('item-id')
+}
+
+function getIdForDelete(...current) {
+
+    console.log(current, 'For Delete')
+    return $(current)
+        .closest('.bookmark-head')
+        .data('item-id')
+
 }
 
 
@@ -110,6 +121,7 @@ function mapstore(i) {
 
 
 export default {
+    getIdForDelete,
     mapstore,
     displayBookmarkApiList,
     mainPageHTML,

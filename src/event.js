@@ -74,17 +74,20 @@ function handleToggleHidden() {
 function handleDelete() {
     $('main').on('click', '.delete', function (e) {
         e.preventDefault()
+        console.log(store, 'store')
 
         console.log('Clicked Delete')
 
-        let getId = store.getIdOfItem(e.target)
+        let getId = store.getIdForDelete(e.currentTarget)
+        console.log(e.currentTarget, 'currentTarget')
         console.log(getId, "Get Id")
         let id = store.findById(getId)
-        console.log(id, 'id')
+        console.log(id.id, 'id delete')
 
-        api.deleteItem(id)
+        api.deleteItem(id.id)
         store.mainPageHTML()
         store.displayBookmarkApiList()
+
     })
 
 }
