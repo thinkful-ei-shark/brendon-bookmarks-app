@@ -3,12 +3,7 @@ import item from './item'
 import store from './store'
 import api from './api'
 
-
-console.log(api.getBookmarks())
-
 function handleAddItem() {
-
-    console.log('addItem called')
 
     $('main').on('submit', '#bookmark-form', (e) => {
 
@@ -23,15 +18,8 @@ function handleAddItem() {
             item.validateUrl(url)
 
             let bookmark = item.createItem(titleValue, description, rating, url)
+            api.addNewItem(bookmark).then(() => store.displayBookmarkApiList())
 
-            console.log(bookmark)
-
-            api.addNewItem(bookmark)
-
-            //item.items.push(bookmark)
-            //let itemList = [...item.items]
-            //console.log(itemList)
-            console.log('Submit Triggered')
 
             store.render()
 
@@ -43,28 +31,17 @@ function handleAddItem() {
 
         catch (error) {
 
-            console.log(error.message)
-
         }
     })
 }
 
 function handleToggleHidden() {
 
-    console.log('ran handleToggleHidden')
-
     $('main').on('click', '.bookmark-head', function (e) {
-        +
-            console.log('Ran handleToggleButton')
         let getId = store.getIdOfItem(e.target)
-        console.log(getId)
         let id = store.findById(getId)
-        console.log(item.items, 'Before id.check')
         id.checked = !id.checked
-        //console.log(id, 'id')
-        console.log(item.items, 'item.items')
         let itemList = [...item.items]
-        console.log(itemList, 'itemList')
         $('.bookmark-head-list').html(store.mapstore(itemList))
     })
 }
@@ -72,7 +49,6 @@ function handleToggleHidden() {
 function handleFilter() {
 
     $('main').on('change', '.filter', function () {
-        console.log($('filter').val())
         store.displayBookmarkApiList()
     })
 
@@ -81,20 +57,10 @@ function handleFilter() {
 function handleDelete() {
     $('main').on('click', '.delete', function (e) {
         e.preventDefault()
-        console.log(store, 'store')
-
-        console.log('Clicked Delete')
-
         let getId = store.getIdOfItem(e.currentTarget)
-        console.log(e.currentTarget, 'currentTarget')
-        console.log(getId, "Get Id")
         let id = store.findById(getId)
-        console.log(id.id, 'id delete')
-
-        api.deleteItem(id.id)
-
+        api.deleteItem(id.id).then(() => store.displayBookmarkApiList())
         store.render()
-
     })
 
 }
@@ -102,7 +68,6 @@ function handleDelete() {
 function handleCancelButtonClick() {
 
     $('main').on('click', '.cancel', function () {
-        console.log('cancel button clicked')
         store.render()
 
     })

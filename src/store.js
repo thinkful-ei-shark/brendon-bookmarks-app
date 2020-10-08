@@ -2,9 +2,7 @@ import $ from 'jquery'
 import item from './item'
 import api from './api'
 
-// HAVE TO ADD DELETE BUTTON TO EVERY NEW BOOKMARK (An Edit/Patch is optional)
 
-// call rating value <div >
 function dropDownForm() {
     return `
     <form id='bookmark-form' >
@@ -31,9 +29,12 @@ function dropDownForm() {
 }
 
 function bookmarkTemplate(item) {
-    let fafastar = `<div class='fa fa-star'></div>`.repeat(item.rating);
 
-    let itemTitle = `<div data-item-id="${item.id}" class="bookmark-head black">${item.title},
+    if (item) {
+
+        let fafastar = `<div class='fa fa-star'></div>`.repeat(item.rating);
+
+        let itemTitle = `<div data-item-id="${item.id}" class="bookmark-head black">${item.title},
         Rating: ${fafastar} <br>
         <button class='delete'>Delete</button>
         <ul id='bookmark-dropdown' class='hidden'>
@@ -42,15 +43,16 @@ function bookmarkTemplate(item) {
         </ul>
     </div>`
 
-    if (item.checked) {
-        if (!$('#description').val()) {
-            item.desc = 'N/A'
-        }
-        itemTitle = `<div data-item-id="${item.id}" class="bookmark-head black">${item.title},
+        if (item.checked) {
+            if (!$('#description').val()) {
+                item.desc = 'N/A'
+            }
+            itemTitle = `<div data-item-id="${item.id}" class="bookmark-head black">${item.title},
         Rating: ${fafastar} <br>
             <button class='delete'>Delete</button>
             <ul id='bookmark-dropdown'>
-            <a href=${item.url}><li>${item.url}</li></a>
+            <p style='text-decoration: underline'>Url <a href=${item.url}><li>${item.url}</li></a></p>
+            <p style='text-decoration: underline'>Description</p>
             <li>${item.desc}</li>
         </ul>
     </div>
@@ -58,10 +60,10 @@ function bookmarkTemplate(item) {
 
     </div>`
 
+        }
+
+        return itemTitle
     }
-
-    return itemTitle
-
 }
 
 function addButtonTemplate() {
@@ -84,7 +86,7 @@ function filterSelectTemplate() {
 
 function mainPageHTML() {
 
-    // Get bookmarks and place them into bookmark-head-list
+
     return $('main').html(`<div class='main'> <h1>Bookmark App</h1> ${addButtonTemplate()} FilterBy: ${filterSelectTemplate()} <ul class='bookmark-head-list'></div></ul >`)
 
 }
@@ -92,7 +94,6 @@ function mainPageHTML() {
 
 
 function getIdOfItem(current) {
-    console.log(current, 'current')
     return $(current)
         .closest('.bookmark-head')
         .data('item-id')
@@ -101,16 +102,14 @@ function getIdOfItem(current) {
 
 function findById(id) {
 
-    console.log(item, 'item')
     return item.items.find(currentItem => currentItem.id === id)
 
 }
 
 function displayBookmarkApiList() {
-    // when filter changes we want to render()
+
     api.getBookmarks()
         .then(bookmarksResJson => {
-            console.log(bookmarksResJson, 'bookmarkResJson')
             item.items = bookmarksResJson.filter(item => item.rating >= $('.filter').val())
             $('.bookmark-head-list').html(mapstore(item.items))
         }
@@ -128,12 +127,8 @@ function mapstore(i) {
 
 const render = () => {
 
-    //For some reason page will not update unless there is 2 displayBookmarkApiList
-    // and will not delete unless there is 3...
-    displayBookmarkApiList()
-    displayBookmarkApiList()
-    displayBookmarkApiList()
     mainPageHTML()
+    displayBookmarkApiList()
     bookmarkTemplate()
 
 }
