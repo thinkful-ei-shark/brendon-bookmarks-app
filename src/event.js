@@ -31,13 +31,13 @@ function handleAddItem() {
             //item.items.push(bookmark)
             //let itemList = [...item.items]
             //console.log(itemList)
-
-            store.mainPageHTML()
-            store.displayBookmarkApiList()
-
-
-
             console.log('Submit Triggered')
+
+            store.render()
+
+
+
+
 
         }
 
@@ -66,9 +66,16 @@ function handleToggleHidden() {
         let itemList = [...item.items]
         console.log(itemList, 'itemList')
         $('.bookmark-head-list').html(store.mapstore(itemList))
-
-
     })
+}
+
+function handleFilter() {
+
+    $('main').on('change', '.filter', function () {
+        console.log($('filter').val())
+        store.displayBookmarkApiList()
+    })
+
 }
 
 function handleDelete() {
@@ -78,15 +85,15 @@ function handleDelete() {
 
         console.log('Clicked Delete')
 
-        let getId = store.getIdForDelete(e.currentTarget)
+        let getId = store.getIdOfItem(e.currentTarget)
         console.log(e.currentTarget, 'currentTarget')
         console.log(getId, "Get Id")
         let id = store.findById(getId)
         console.log(id.id, 'id delete')
 
         api.deleteItem(id.id)
-        store.mainPageHTML()
-        store.displayBookmarkApiList()
+
+        store.render()
 
     })
 
@@ -96,8 +103,7 @@ function handleCancelButtonClick() {
 
     $('main').on('click', '.cancel', function () {
         console.log('cancel button clicked')
-        store.mainPageHTML()
-        store.displayBookmarkApiList()
+        store.render()
 
     })
 
@@ -107,6 +113,7 @@ function handleAddButtonClick() {
 
     $('main').on('click', '.add', function (e) {
         e.preventDefault()
+
         return $('main').html(`<div class='main'><h1>Bookmark App</h1> ${store.dropDownForm()} <ul class='bookmark-head-list'></ul><div>`)
 
     })
@@ -117,6 +124,7 @@ function handleAddButtonClick() {
 
 const bindEventListeners = () => {
 
+    handleFilter()
     handleDelete()
     handleCancelButtonClick()
     handleAddButtonClick()

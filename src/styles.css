@@ -1,8 +1,21 @@
+html {
+
+    color: white;
+    background-image: url(./img/backgroundForBookmarkApp.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+
 main {
 
-    display: flex;
+    justify-content: center;
+    color: white;
 
+}
 
+.black {
+    color: black;
 }
 
 li {
@@ -12,9 +25,12 @@ li {
 }
 
 .main {
+
     display: flex;
+    flex: 1;
     flex-direction: column;
     text-align: center;
+
 }
 
 form {
@@ -26,7 +42,7 @@ form {
 }
 
 a {
-    color: blue;
+    color: #333;
 }
 
 input {
@@ -36,27 +52,23 @@ input[type='text'], input[type='url']{
     font-size: 30px;
 }
 
-.bookmark-head-list {
 
-    width: 300px;
-    border: 1px solid black;
-}
 
 .bookmark {
 
-
-    padding-left: 10px;
     border: 1px solid grey;
     text-align: center;
     justify-content: center;
-
 
 }
 
 
 .bookmark-head {
 
-    padding: 20px 10px 20px 10px;
+    font-weight: bolder;
+    font-size: 30px;
+    background-color: #F9D8A7;
+    padding: 30px 10px 30px 10px;
     border: 1px solid grey;
 
 }
@@ -75,6 +87,8 @@ select {
 
 
 button {
+    color:black;
+    background-color: #F9D8DF;
     font-weight: bolder;
     font-size: large;
     height: 40px;
@@ -91,6 +105,10 @@ button {
     display: none;
 }
 
+@media all and (max-width: 600px){
+
+
+}
 
 /* inside of rating add a star value for rating*/
 /* stop forgetting about content: */

@@ -10,9 +10,9 @@ function dropDownForm() {
     <form id='bookmark-form' >
 
     <label for='title'>Title</label>
-    <input id="title" type="text" placeholder='Required'>
+    <input id="title" type="text" placeholder='Required' required>
     <label for='url'>Url</label>
-    <input id="url" type="url" placeholder='Required'>
+    <input id="url" type="url" placeholder='Required' required>
     <label for="description">Description</label>
     <textarea id="description" placeholder='Recommended'></textarea>
     <label for='rate'>Rate</label>
@@ -33,7 +33,7 @@ function dropDownForm() {
 function bookmarkTemplate(item) {
     let fafastar = `<div class='fa fa-star'></div>`.repeat(item.rating);
 
-    let itemTitle = `<div data-item-id="${item.id}" class="bookmark-head">${item.title},
+    let itemTitle = `<div data-item-id="${item.id}" class="bookmark-head black">${item.title},
         Rating: ${fafastar} <br>
         <button class='delete'>Delete</button>
         <ul id='bookmark-dropdown' class='hidden'>
@@ -41,11 +41,12 @@ function bookmarkTemplate(item) {
             <li>${item.desc}</li>
         </ul>
     </div>`
+
     if (item.checked) {
         if (!$('#description').val()) {
             item.desc = 'N/A'
         }
-        itemTitle = `<div data-item-id="${item.id}" class="bookmark-head">${item.title},
+        itemTitle = `<div data-item-id="${item.id}" class="bookmark-head black">${item.title},
         Rating: ${fafastar} <br>
             <button class='delete'>Delete</button>
             <ul id='bookmark-dropdown'>
@@ -65,13 +66,26 @@ function bookmarkTemplate(item) {
 
 function addButtonTemplate() {
     return `<button name='add' id='add' class='add'>Add</button> `
+
 }
+
+function filterSelectTemplate() {
+    return `<select class='filter'>
+        <option value=${1}>1+ Stars</option>
+        <option value=${2}>2+ Stars</option>
+        <option value=${3}>3+ Stars</option>
+        <option value=${4}>4+ Stars</option>
+        <option value=${5}>5+ Stars</option>
+    </select>`
+
+}
+
+
 
 function mainPageHTML() {
 
     // Get bookmarks and place them into bookmark-head-list
-    return $('main').html(`<div class='main'> <h1>Bookmark App</h1 > ${addButtonTemplate()} <ul class='bookmark-head-list'></div></ul >
-        `)
+    return $('main').html(`<div class='main'> <h1>Bookmark App</h1> ${addButtonTemplate()} FilterBy: ${filterSelectTemplate()} <ul class='bookmark-head-list'></div></ul >`)
 
 }
 
@@ -84,15 +98,6 @@ function getIdOfItem(current) {
         .data('item-id')
 }
 
-function getIdForDelete(...current) {
-
-    console.log(current, 'For Delete')
-    return $(current)
-        .closest('.bookmark-head')
-        .data('item-id')
-
-}
-
 
 function findById(id) {
 
@@ -102,13 +107,15 @@ function findById(id) {
 }
 
 function displayBookmarkApiList() {
+    // when filter changes we want to render()
     api.getBookmarks()
         .then(bookmarksResJson => {
             console.log(bookmarksResJson, 'bookmarkResJson')
-            item.items = bookmarksResJson
+            item.items = bookmarksResJson.filter(item => item.rating >= $('.filter').val())
             $('.bookmark-head-list').html(mapstore(item.items))
         }
         )
+
 }
 
 
@@ -119,9 +126,21 @@ function mapstore(i) {
 
 }
 
+const render = () => {
+
+    //For some reason page will not update unless there is 2 displayBookmarkApiList
+    // and will not delete unless there is 3...
+    displayBookmarkApiList()
+    displayBookmarkApiList()
+    displayBookmarkApiList()
+    mainPageHTML()
+    bookmarkTemplate()
+
+}
 
 export default {
-    getIdForDelete,
+
+    render,
     mapstore,
     displayBookmarkApiList,
     mainPageHTML,
